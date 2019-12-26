@@ -1,0 +1,157 @@
+ooohhhh my god.
+
+I dont understand the difference between datamodel.prisma and schema.graphql. They're both very similar
+and both appear to create the underlying structure for the database or what queries are possible.
+And then you have a third chunk: resolvers.
+
+https://www.prisma.io/docs/1.7/tutorials/prisma-basics/getting-started-ouzia3ahqu
+1. Created prismaTwo directory
+
+2. ran prisma init hello-world inside /junk/prismaTwo folder
+
+    - used demo server + mysql database
+
+    - selected demo-us1
+
+    - named service 'someday'
+
+    - dev stage
+
+    - javascript client
+
+        - task complete. two files created: prisma.yml & datamodel.prisma & generated
+        inside /junk/prismaTwo/hello-world
+
+        directions:
+
+        1. Open folder: cd hello-world
+        2. Deploy your Prisma service: prisma deploy
+        3. Read more about deploying services:
+           http://bit.ly/prisma-deploy-services
+
+
+3. created .graphqlconfig.yml inside /junk/prismaTwo/hello-world
+
+
+3.5 Ran $ prisma deploy inside hello-world directory
+
+
+4.   INSIDE the hello-world directory, run $ prisma playground
+
+5. Ran query for all users but was empty
+6. sent mutation to create a user sarah
+
+mutation {
+  createUser(data: {
+    name: "Sarah"
+  }) {
+    id
+  }
+}
+
+
+7. Ran query with where clause. Where has "ra"
+
+query {
+  users(where: {
+    name_contains: "ra"
+  }) {
+    id
+    name
+  }
+}
+
+8. Order by descending:
+
+
+query {
+  users(orderBy: name_DESC) {
+    id
+    name
+  }
+}
+
+9. Added type Color to datamodel.prisma
+
+type Color {
+  id: ID! @id
+  color_code: String!
+}
+
+// copied from the working project but removed the created_at part
+
+
+10. RAN prisma deploy inside hello-world directory
+
+
+11. creating colors
+
+12. Testing querying of colors. NOTE: I get a bunch of mutations and queries by default.
+I think they go away when I start creating my own.
+
+    This works: 
+    query {
+      colors(where: {
+        color_code_contains: "#00ff00"
+      }) {
+        id
+        color_code
+      }
+    }
+
+    ----
+    this works too:
+
+    query {
+      colors(where: {
+        id_contains: "ck4klwvno9giw0b0948abbii4"
+      }) {
+        id
+        color_code
+      }
+    }
+
+    -------
+    this appears to work:
+    query {
+      color(where: {
+        id: "ck4klwvno9giw0b0948abbii4"
+      }) {
+        id
+        color_code
+      }
+    }
+
+
+
+13.  backed up prismaTwo into backupPrismaTwo
+
+14. Next step - get this to run with the working project server. a copy of it at least...j
+
+    - /prismaTwo/hello-world is equivalent to "prisma" in the project directory
+
+    - added package.json from project to ~/Code/junk/prismaTwo
+    - ran yarn install inside prismaTwo for graphql-yoga and prisma-client-lib
+
+    
+15. Created src/ and src/index.js
+
+../hello-world/datamodel.prisma
+
+    commented out typeDefs. trying schema: "../hello-world/datamodel.prisma" in const server.
+
+    using endpoint someday/dev as part of object that is passed to server.start()
+
+
+
+16. couldnt find module for prisma because require statement was pointing to wrong directory. moved to 
+ require (../hello-world/generated).
+
+    - Now able to start server. and its gathering data from correct "service" or whatever.
+
+
+
+
+17. Next step. Get rest of server working from the project in prismaTwo
+
+I think the rest of server IS working.......

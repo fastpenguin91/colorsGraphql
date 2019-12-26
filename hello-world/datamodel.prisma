@@ -1,0 +1,9 @@
+type User {
+  id: ID! @id
+  name: String!
+}
+
+type Color {
+    id: ID! @id
+    color_code: String!
+}
